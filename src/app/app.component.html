@@ -1,50 +1,62 @@
-<html>
-
-<head>
-  <title>Словаро</title>
-</head>
-
-<body>
-<header id='header'>
-  <h1>Slovaro</h1>
-  <!--
-  <br />
-  <button id="sync-xml" onClick="syncXml()">Sync XML</button><br /> -->
-</header>
+<div class="main-container">
+  <header class="header">
+    <h1>Slovaro</h1>
+    <!--
+    <br />
+    <button id="sync-xml" onClick="syncXml()">Sync XML</button><br /> -->
+  </header>
 
 
-<main>
-  <div class='sw-container' style='display:flex; '>
+  <main class="main">
+    <div class='sw-container'>
 
-    <div id='s' class='column'>
-      Error. Sources not loaded
+      <section class='column column-sources'>
+        <div *ngFor="let source of sources">
+          <span *ngIf="sources.length == 0">Error. Sources are not loaded</span>
+          <p class="source" [attr.data-sourceid]="source.id" (click)="setActiveSource(source.id)">{{source.name}}</p>
+        </div>
+      </section>
 
+      <section class='column column-words'>
+        <div *ngFor="let word of words">
+          <div *ngIf="words.length === 0 || words == undefined">
+            ---<br>
+            Выберите источник
+          </div>
+          <p class="word" [attr.data-wordid]="word.id">{{word.content}}</p>
+        </div>
+      </section>
     </div>
-    <div id='w' class='column'>
-      ---<br>
-      Select a source
+    <div style='display:flex; '>
+      <div class='column-width footer'>
+
+        <input id='inp-s'><br/>
+        <button id='add-s' onClick='addSource()'>Add source</button>
+        <br/>
+
+      </div>
+
+      <div class='column-width footer'>
+
+        <input id='inp-w'><br/>
+        <button id="add-w" onClick='addWord()'>Add word</button>
+        <br/>
+
+      </div>
     </div>
-  </div>
-  <div style='display:flex; '>
-    <div class='column-width footer'>
-
-      <input id='inp-s'><br/>
-      <button id='add-s' onClick='addSource()'>Add source</button>
-      <br/>
-
-    </div>
-
-    <div class='column-width footer'>
-
-      <input id='inp-w'><br/>
-      <button id="add-w" onClick='addWord()'>Add word</button>
-      <br/>
-
-    </div>
-  </div>
-</main>
+  </main>
 
 
+  <footer id='instructions'>
+    <h2>Instructions:</h2>
+    <ul>
+      <li> Left click on source = show words for that source</li>
+      <li> Right click on source or word = show modal for editing/deleting</li>
+      <li> Shift + up/down -- move word up/down by 1</li>
+    </ul>
+  </footer>
+
+</div>
 <div id='modal-root'>
   <div id='edit-modal' class='hidden'>
     <input id='modal-inp'>
@@ -57,17 +69,3 @@
 
   </div>
 </div>
-<div id="response-container"></div>
-<div id="pywebview-status"></div>
-<div id='instructions'>
-  <h2>Instructions:</h2>
-  <ul>
-    <li> Left click on source = show words for that source</li>
-    <li> Right click on source or word = show modal for editing/deleting</li>
-    <li> Shift + up/down -- move word up/down by 1</li>
-  </ul>
-</div>
-
-</body>
-
-</html>

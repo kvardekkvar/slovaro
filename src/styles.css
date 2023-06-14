@@ -4,3 +4,9 @@ body {
   height: 97%;
   max-height: 100%;
 }
+app-root {
+  height: 100%;
+}
+html {
+  height: 100%;
+}
