@@ -9,8 +9,8 @@ import {Source} from "./source";
 })
 export class AppComponent  {
   title = 'slovaro';
-  sources: any[] = [];
-  activeSource: Source = new Source(-1, -1, "ololo");
+  sources: Source[] = [];
+  activeSource: Source = new Source();
   words: any[] = [];
   serverUrl = 'http://178.209.46.147:8080/slovaro';
 
@@ -19,20 +19,23 @@ export class AppComponent  {
     this.getSources();
   }
   getSources() {
-    return this.http.get(this.serverUrl + "/sources").subscribe((data: any) => this.sources = data)
+    return this.http.get<Source[]>(this.serverUrl + "/sources").subscribe(
+    (data: Source[]) =>
+    this.sources = data.map(x=> Object.assign(new Source(), x))
+    )
   }
 
   setActiveSource(id: number) {
     for (let source of this.sources) {
-      if (source.id == id) {
+      if (source.getId() == id) {
         this.activeSource = source;
         document
           .querySelectorAll(".active-source")
           .forEach(x => x.classList.remove("active-source"));
         document
-          .querySelectorAll('.source[data-sourceid="' + source.id + '"]')
+          .querySelectorAll('.source[data-sourceid="' + source.getId() + '"]')
           .forEach(x => x.classList.add("active-source"));
-        this.getWords(source.id);
+        this.getWords(source.getId());
         break;
       }
 
@@ -46,4 +49,38 @@ export class AppComponent  {
     return this.http.get(requestURL).subscribe((data: any) => this.words = data)
 
   }
+
+  addSource(){
+    let source = (document.querySelectorAll('.input-source')[0] as HTMLInputElement).value;
+
+    let query: URL = new URL(this.serverUrl + "/sources");
+    let requestURL = query.toString();
+
+    const body = {userId: 1, name: source};
+    return this.http.post(requestURL, body).subscribe(
+      (data: any) => {
+          console.log(data);
+          this.getSources();
+          },
+      (error) => console.log(error)
+    );
+
+  }
+
+    addWord(){
+      let word = (document.querySelectorAll('.input-word')[0] as HTMLInputElement).value;
+
+      let query: URL = new URL(this.serverUrl + "/words");
+      let requestURL = query.toString();
+
+      const body = {userId: 1, content: word, sourceId: this.activeSource.getId()};
+      return this.http.post(requestURL, body).subscribe(
+        (data: any) => {
+            console.log(data);
+            this.getWords(this.activeSource.getId());
+          },
+        (error) => console.log(error)
+        );
+
+    }
 }

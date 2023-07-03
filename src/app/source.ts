@@ -1,8 +1,16 @@
 export class Source{
- constructor(private id: number, private userid: number, private name: string) {
+  private id!: number;
+  private userid!: number;
+  private name!: string;
+
+ constructor() {
  }
 
- getId(){
+ public getId(){
    return this.id;
  }
+
+ public getName(){
+    return this.name;
+}
 }

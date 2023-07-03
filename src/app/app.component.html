@@ -13,7 +13,7 @@
       <section class='column column-sources'>
         <div *ngFor="let source of sources">
           <span *ngIf="sources.length == 0">Error. Sources are not loaded</span>
-          <p class="source" [attr.data-sourceid]="source.id" (click)="setActiveSource(source.id)">{{source.name}}</p>
+          <p class="source" [attr.data-sourceid]="source.getId()" (click)="setActiveSource(source.getId())">{{source.getName()}}</p>
         </div>
       </section>
 
@@ -30,16 +30,16 @@
     <div style='display:flex; '>
       <div class='column-width footer'>
 
-        <input id='inp-s'><br/>
-        <button id='add-s' onClick='addSource()'>Add source</button>
+        <input class='input-source'><br/>
+        <button class='add-source' (click)='addSource()'>Add source</button>
         <br/>
 
       </div>
 
       <div class='column-width footer'>
 
-        <input id='inp-w'><br/>
-        <button id="add-w" onClick='addWord()'>Add word</button>
+        <input class='input-word'><br/>
+        <button class="add-word" (click)='addWord()'>Add word</button>
         <br/>
 
       </div>
