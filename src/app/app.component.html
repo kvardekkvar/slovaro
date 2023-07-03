@@ -13,7 +13,7 @@
       <section class='column column-sources'>
         <div *ngFor="let source of sources">
           <span *ngIf="sources.length == 0">Error. Sources are not loaded</span>
-          <p class="source" [attr.data-sourceid]="source.getId()" (click)="setActiveSource(source.getId())">{{source.getName()}}</p>
+          <p class="source" [attr.data-sourceid]="source.getId()" (click)="setActiveSource(source.getId())" (contextmenu)="showModal('source', $event)">{{source.getName()}}</p>
         </div>
       </section>
 
@@ -23,7 +23,7 @@
             ---<br>
             Выберите источник
           </div>
-          <p class="word" [attr.data-wordid]="word.id">{{word.content}}</p>
+          <p class="word" [attr.data-wordid]="word.id" (contextmenu)="showModal('word', $event)">{{word.content}}</p>
         </div>
       </section>
     </div>
@@ -57,14 +57,14 @@
   </footer>
 
 </div>
-<div id='modal-root'>
+<div class='modal-root'>
   <div id='edit-modal' class='hidden'>
-    <input id='modal-inp'>
+    <input class='edit-modal__input'>
     <br/>
     <div class='center-innards'>
-      <button id='edit-btn'>Edit</button>
-      <button id='nothing-btn'>Do nothing</button>
-      <button id='delete-btn'>Delete</button>
+      <button class='edit-modal__edit-button' (click)="editEntry()">Edit</button>
+      <button class='edit-modal__nothing-button' (click)="closeModal()">Do nothing</button>
+      <button class='edit-modal__delete-button' (click)="deleteEntry()">Delete</button>
     </div>
 
   </div>
