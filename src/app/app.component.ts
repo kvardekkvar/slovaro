@@ -126,14 +126,16 @@ export class AppComponent  {
     if (this.modalData.getType() === 'source'){
       let entry = (document.querySelectorAll('#edit-modal input')[0] as HTMLInputElement).value;
 
+      let sourceId = this.modalData.getElement().getAttribute('data-sourceid');
       const body = {
         userId: 1,
         name: entry,
-        id: this.modalData.getElement().getAttribute('data-sourceid')
+        id: sourceId
         };
-       this.http.put(this.serverUrl + "/sources", body).subscribe(
+       this.http.put(this.serverUrl + "/sources/" + sourceId, body).subscribe(
         (data: any) => {
             console.log(data);
+            this.closeModal();
             this.getSources();
           },
         (error) => console.log(error)
@@ -143,17 +145,18 @@ export class AppComponent  {
 
     if (this.modalData.getType() === 'word'){
       let entry = (document.querySelectorAll('#edit-modal input')[0] as HTMLInputElement).value;
-
+      let wordId = this.modalData.getElement().getAttribute('data-wordid');
       const body = {
         userId: 1,
         content: entry,
-        id: this.modalData.getElement().getAttribute('data-wordid'),
+        id: wordId,
         sourceId: this.activeSource.getId()
         };
-       this.http.put(this.serverUrl + "/words", body).subscribe(
+       this.http.put(this.serverUrl + "/words/" + wordId, body).subscribe(
         (data: any) => {
             console.log(data);
-            this.getSources();
+            this.closeModal();
+            this.getWords(this.activeSource.getId());
           },
         (error) => console.log(error)
         );
